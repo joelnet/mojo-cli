@@ -1,0 +1,28 @@
+{
+  "name": "mojo-cli",
+  "version": "1.0.0",
+  "description": "CLI for mojo.sh",
+  "bin": {
+    "mojo": "./src/mojo.js"
+  },
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joel Thoms",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "webpack": "^2.6.1"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0",
+    "fs": "0.0.1-security",
+    "keypair": "^1.0.1"
+  }
+}
