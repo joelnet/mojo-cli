@@ -23,6 +23,7 @@
     "axios": "^0.16.2",
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
+    "config": "^1.26.1",
     "fs": "0.0.1-security",
     "functional-helpers": "github:joelnet/functional-helpers",
     "joi": "^10.5.2",

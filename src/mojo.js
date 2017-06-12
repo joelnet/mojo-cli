@@ -16,7 +16,7 @@ program
     .option('-p <password>', 'Password to register')
     .description('register for a mojo.sh account.\n  -u <username>\n  -p <password>\n  -c <client_id>')
     .action(cmd =>
-        api.register({ realm: 'mojo:mojo', client_id: 'mojo-cli', username: cmd.U, password: cmd.P })
+        api.register({ realm: 'mojo:default', client_id: 'mojo-cli', username: cmd.U, password: cmd.P })
             .then(() => console.log(`User ${cmd.U} created.`))
             .catch(err => console.log('Registration failed:', err))
     )
