@@ -5,7 +5,8 @@ const validate = promisify(Joi.validate)
 const schema = Joi.object().keys({
     realm: Joi.string().required(),
     client_id: Joi.string().required(),
-    username: Joi.string().email().required(),
+    username: Joi.string().required(),
+    email: Joi.string().email().required(),
     password: Joi.string().required(),
     redirect_uri: Joi.string()
 })
