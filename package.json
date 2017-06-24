@@ -25,9 +25,12 @@
     "commander": "^2.9.0",
     "config": "^1.26.1",
     "fs": "0.0.1-security",
+    "fs-extra": "^3.0.1",
     "functional-helpers": "github:joelnet/functional-helpers",
     "joi": "^10.5.2",
+    "js-yaml": "^3.8.4",
     "keypair": "^1.0.1",
+    "promptly": "^2.2.0",
     "ramda": "^0.24.1"
   }
 }

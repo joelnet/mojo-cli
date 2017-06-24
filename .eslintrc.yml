@@ -20,4 +20,4 @@ rules:
     - error
     - never
   no-console:
-    - warn
+    - off
