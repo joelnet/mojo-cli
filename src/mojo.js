@@ -1,23 +1,38 @@
 #!/usr/bin/env node
 
 const config = require('config')
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
-const promisify = require('functional-helpers/promisify')
 const api = require('./lib/mojo-api')
-const always = require('ramda/src/always')
-const yaml = require('js-yaml')
 const userConfig = require('./lib/config')
 const promptly = require('promptly')
 const chalk = require('chalk')
+const propOr = require('ramda/src/propOr')
+const jwt = require('jsonwebtoken')
 
 const program = require('commander')
 const generatePrivateKeys = require('./generate-private-keys')
 
+const rejectIfNoRefreshToken = session =>
+    session.refresh_token
+        ? session
+        : Promise.reject('You must login to perform this action.')
+
+const rejectIfRefreshTokenExpired = session =>
+    jwt.decode(session.refresh_token).exp - Math.floor(Date.now() / 1000) >= 0
+        ? session
+        : Promise.reject('Your login session has expired. Please login to perform this action.')
+
+const saveSession = session =>
+    userConfig.readConfig()
+        .then(config => userConfig.writeConfig(Object.assign({}, config, { session })))
+        .then(() => session)
+
 const ensureLogin = () =>
     userConfig.readConfig()
-        .then(config => config.session)
+        .then(propOr({}, 'session'))
+        .then(rejectIfNoRefreshToken)
+        .then(rejectIfRefreshTokenExpired)
+        .then(session => api.refreshToken({ refresh_token: session.refresh_token, realm: 'mojo:default', client_id: config.get('client_id') }))
+        .then(saveSession)
 
 const valueOrPrompt = (value, prompt, options) =>
     value ? Promise.resolve(value) : promptly.prompt(prompt, options)
@@ -45,7 +60,13 @@ program
     .command('realm <action> <realm>')
     .description('list, add or remove realms')
     .action((action, realm) => {
-        console.log('realm', action, realm)
+        ensureLogin()
+            .then(tokens => {
+                const decoded = jwt.decode(tokens.access_token)
+                return api.createRealm({ realm: `${decoded.sub}:${realm}`, access_token: tokens.access_token })
+            })
+            .then(() => console.log(`Successfully created ${chalk.cyan(realm)}.`))
+            .catch(err => console.log(chalk.red('Error:', err)))
     })
 
 program

@@ -29,6 +29,7 @@
     "functional-helpers": "github:joelnet/functional-helpers",
     "joi": "^10.5.2",
     "js-yaml": "^3.8.4",
+    "jsonwebtoken": "^7.4.1",
     "keypair": "^1.0.1",
     "promptly": "^2.2.0",
     "ramda": "^0.24.1"

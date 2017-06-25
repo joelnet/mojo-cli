@@ -6,13 +6,7 @@ const errorResponse = require('./lib/errorResponse')
 
 const authUri = config.get('authorizationEndpoint')
 
-const getLoginUrl = realm =>
-    `${authUri}/${realm}/oidc/token`
-
-module.exports = model => {
-    const request = querystring.stringify(Object.assign({ grant_type: 'password' }, model))
-
-    return axios.post(getLoginUrl(model.realm), request)
+module.exports = model =>
+    axios.post(`${authUri}/${model.realm}`, querystring.stringify(model))
         .then(prop('data'))
         .catch(response => Promise.reject(errorResponse(response)))
-}

@@ -10,7 +10,7 @@ const getLoginUrl = realm =>
     `${authUri}/${realm}/oidc/token`
 
 module.exports = model => {
-    const request = querystring.stringify(Object.assign({ grant_type: 'password' }, model))
+    const request = querystring.stringify(Object.assign({ grant_type: 'refresh_token' }, model))
 
     return axios.post(getLoginUrl(model.realm), request)
         .then(prop('data'))
